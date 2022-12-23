@@ -88,9 +88,21 @@ localhost:5433:pythontaskdb:admin:averysecurepassword1
 ```
 
 ### Migrate the database
-Once all the above steps have been 
+Once the connection has been established, you can create all the required database structures by using Django's manage tool:
+```bash
+python manage.py migrate
+```
 
 ### Launch Django app
-Once all the above steps have been 
+Once all the above steps have been completed, the app can be launched using the following command:
+```bash
+python manage.py runserver
+```
 
+## Testing
+This app has tests written using PyTest. They are all located inside the `tests` folder.
 
+To lanuch tests for this project, use the following command in project's root directory, inside its virtual environment:
+```bash
+pytest
+```
