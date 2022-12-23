@@ -10,6 +10,8 @@ This project containst code for a Django app with an REST API, which allows for:
 
 App's API is documented via Swagger, which is exposed at the default page (URI "/") of the app, once it has been launched.
 
+Latest YAML and JSON exports of the API schema are placed in the root directory of the app.
+
 ## Setup
 Please follow steps below to launch this app:
 
