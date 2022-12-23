@@ -1,0 +1,151 @@
+swagger: '2.0'
+info:
+  title: Python Task API
+  description: |2
+
+    An API to upload, store, resize and retrieve image files.
+
+    **Documentation links:**
+    - [This site](/swagger)
+    - [JSON export of this specification](/swagger.json)
+    - [YAML export of this specification](/swagger.yaml)
+    - [ReDoc version of this specification](/redoc)
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+  - http
+basePath: /
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+  - Basic: []
+paths:
+  /images/:
+    get:
+      operationId: images_list
+      summary: Returns a list of image objects
+      description: |-
+        API Endpoint for retrieving list of image objects.
+
+        URL Query parameter:
+        - **title** - (*optional*) If provided, will filter out objects, whose "title" property
+        does not contain provided text (case-insensitive).
+      parameters:
+        - name: title
+          in: query
+          description: Returns images, whose "title" contains this value
+          type: string
+      responses:
+        '200':
+          description: response description
+          schema:
+            $ref: '#/definitions/PublicImage'
+      consumes:
+        - multipart/form-data
+      tags:
+        - images
+      security: []
+    post:
+      operationId: images_create
+      summary: Upload image
+      description: |-
+        API Endpoint for uploading and resizing images.
+
+        Form data parameters:
+        - **title** - (*optional*) Image's title. If left empty, or excluded,
+        image's filename will be taken as "title" instead.
+        - **width** and **height** - (*optional*) They describe image's final size.
+            - If both variables are included, the image will be scaled match that size.
+            - If one of them is excluded or equal to 0, the image will be scaled
+            to match the provided size, while keeping original aspect ratio.
+            - If both are not provided or are equal to 0, the image's size will be left intact.
+        - **image** - (*required*) Image's file. If a file with exactly the same name exists already
+        on the server, a suffix will be added to differentiate them.
+      parameters:
+        - name: title
+          in: formData
+          description: Image's title
+          type: string
+        - name: width
+          in: formData
+          description: Image's final width. Must be >= 0
+          type: integer
+        - name: height
+          in: formData
+          description: Image's final height. Must be >= 0
+          type: integer
+        - name: image
+          in: formData
+          description: Image's file
+          required: true
+          type: file
+      responses:
+        '200':
+          description: response description
+          schema:
+            $ref: '#/definitions/PublicImage'
+      consumes:
+        - multipart/form-data
+      tags:
+        - images
+      security: []
+    parameters: []
+  /images/{image_id}:
+    get:
+      operationId: images_read
+      summary: Get image object
+      description: |-
+        API Endpoint for retrieving a single image object.
+
+        URL parameter:
+        - **image_id** - (*required*) Image object's id.
+      parameters: []
+      responses:
+        '200':
+          description: response description
+          schema:
+            $ref: '#/definitions/PublicImage'
+      tags:
+        - images
+      security: []
+    parameters:
+      - name: image_id
+        in: path
+        required: true
+        type: string
+definitions:
+  PublicImage:
+    required:
+      - title
+      - width
+      - height
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      url:
+        title: Url
+        type: string
+        readOnly: true
+      title:
+        title: Title
+        type: string
+        maxLength: 80
+        minLength: 1
+      width:
+        title: Width
+        type: integer
+        maximum: 2147483647
+        minimum: -2147483648
+      height:
+        title: Height
+        type: integer
+        maximum: 2147483647
+        minimum: -2147483648
