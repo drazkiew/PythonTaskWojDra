@@ -102,7 +102,7 @@ python manage.py runserver
 ## Testing
 This app has tests written using PyTest. They are all located inside the `tests` folder.
 
-To lanuch tests for this project, use the following command in project's root directory, inside its virtual environment:
+To launch this app's tests, use the following command in project's root directory, inside its virtual environment:
 ```bash
 pytest
 ```
