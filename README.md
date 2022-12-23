@@ -7,7 +7,7 @@ This app is a Django app with an REST API, which allows for:
 - Uploading, storing and retrieving image files in commonly used image formats.
 - Changing the size of an uploaded image
 
-App's API can be seen in detail via Swagger documentation, exposed at the default page (URI "/") of the app, once it has been launched.
+App's API is documented via Swagger, which is exposed at the default page (URI "/") of the app, once it has been launched.
 
 ## Setup
 Please follow steps below to launch this app:
