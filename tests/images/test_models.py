@@ -11,7 +11,7 @@ from .conftest import test_simple_images
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    'title, width, height, file, extension, format', [
+    'title, width, height, file, extension, file_format', [
         ("example", 300, 200, "example", "png", "PNG"),
         ("another", 120, 52, "another", "gif", "GIF"),
         ("hello?", 576, 1224, "hello", "jpg", "JPEG"),
@@ -20,11 +20,11 @@ from .conftest import test_simple_images
     ]
 )
 def test_image_create(
-        title, width, height, file, extension, format,
+        title, width, height, file, extension, file_format,
         create_image_file, remove_images_afterwards
 ):
     filename = f"{file}.{extension}"
-    image_size = create_image_file(filename, format, width, height)
+    image_size = create_image_file(filename, file_format, width, height)
     with open(filename, "rb") as test_file:
         created = Image.create(
             title, width, height, File(test_file)
@@ -48,17 +48,17 @@ def test_image_create(
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    'file, extension, format', [
+    'file, extension, file_format', [
         ("example", "png", "PNG"),
         ("another", "gif", "GIF"),
     ]
 )
 def test_image_create_same_filename(
-        file, extension, format,
+        file, extension, file_format,
         create_image_file, remove_images_afterwards
 ):
     filename = f"{file}.{extension}"
-    create_image_file(filename, format, 100, 100)
+    create_image_file(filename, file_format, 100, 100)
     with open(filename, "rb") as test_file:
         first_created = Image.create(
             "test1", 100, 100, File(test_file)

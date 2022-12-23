@@ -1,13 +1,16 @@
 import pytest
 from PIL import Image as PillowImage
+from django.db.models import Q
+from django.http import QueryDict
 from django.urls import reverse
 
 from apps.images.models import Image
+from apps.images.views import ImagesView
 
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    'title, width, height, file, extension, format', [
+    'title, width, height, file, extension, file_format', [
         ("example", 300, 200, "example", "png", "PNG"),
         ("another", 120, 52, "another", "gif", "GIF"),
         ("hello?", 576, 1224, "hello", "jpg", "JPEG"),
@@ -16,12 +19,12 @@ from apps.images.models import Image
     ]
 )
 def test_images_view_post(
-        title, width, height, file, extension, format,
+        title, width, height, file, extension, file_format,
         api_client, post_image, create_image_file, remove_images_afterwards
 ):
     filename = f"{file}.{extension}"
 
-    image_size = create_image_file(filename, format, width, height)
+    image_size = create_image_file(filename, file_format, width, height)
     response = post_image(api_client, title, filename, width, height)
 
     # open uploaded file
@@ -40,7 +43,7 @@ def test_images_view_post(
     assert saved_image
     assert saved_image.width == width
     assert saved_image.height == height
-    assert saved_image.format == format
+    assert saved_image.format == file_format
     assert saved_image.size == image_size
 
 
@@ -178,3 +181,21 @@ def test_images_view_post_unsupported_format(
     # Check general response data
     assert response.status_code == 400
     assert response.data == {'error': f'File format "{extension}" is not supported'}
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    'arguments, expected', [
+        ("", Q()),
+        ("title=test", Q(title__icontains="test")),
+        ("title=another-test", Q(title__icontains="another-test")),
+        ("whats_this=dunno", Q()),
+    ]
+)
+def test_images_view_create_image_query(
+        arguments, expected
+):
+    args = QueryDict(arguments)
+    query = ImagesView.create_image_query(args)
+
+    assert query == expected

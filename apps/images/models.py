@@ -11,7 +11,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images')
 
     @staticmethod
-    def create(title: str, width: int, height: int, image: File):
+    def create(title: str, width: int, height: int, image: File) -> "Image":
         if not title and image:
             title = str(image.name).split(".")[0]
         image, width, height = prepare_image(image, width, height)
@@ -23,8 +23,8 @@ class Image(models.Model):
         return new_obj
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self.image.url
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Image \"{self.title}\", {self.width}x{self.height}"

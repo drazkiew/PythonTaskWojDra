@@ -22,7 +22,7 @@ def test_get_error_response(error, status):
 
 
 @pytest.mark.parametrize(
-    'filename, format, width, height, resize_width, resize_height', [
+    'filename, file_format, width, height, resize_width, resize_height', [
         ("test.png", "PNG", 400, 300, 400, 300),
         ("test.gif", "GIF", 400, 300, 323, 120),
         ("test.tiff", "TIFF", 400, 300, 543, 443),
@@ -33,10 +33,10 @@ def test_get_error_response(error, status):
     ]
 )
 def test_prepare_image(
-        filename, format, width, height, resize_width, resize_height,
+        filename, file_format, width, height, resize_width, resize_height,
         create_image_file
 ):
-    create_image_file(filename, format, width, height)
+    create_image_file(filename, file_format, width, height)
     with open(filename, "rb") as file_binary:
         result_file, result_width, result_height = prepare_image(
             File(file_binary, name=filename), resize_width, resize_height
@@ -64,16 +64,16 @@ def test_prepare_image(
 
 
 @pytest.mark.parametrize(
-    'filename, format, width, height', [
+    'filename, file_format, width, height', [
         ("test.jpeg", "JPEG", 436, 443),
         ("test.webp", "WEBP", 400, 300),
     ]
 )
 def test_prepare_image_no_resize(
-        filename, format, width, height,
+        filename, file_format, width, height,
         create_image_file
 ):
-    create_image_file(filename, format, width, height)
+    create_image_file(filename, file_format, width, height)
     with open(filename, "rb") as file_binary:
         file = File(file_binary, name=filename)
         result_file, result_width, result_height = prepare_image(
@@ -89,17 +89,17 @@ def test_prepare_image_no_resize(
 
 
 @pytest.mark.parametrize(
-    'extension, format', [
+    'extension, file_format', [
         ("ico", "ICO"),
         ("eps", "EPS"),
     ]
 )
 def test_prepare_image_not_supported_format(
-        extension, format,
+        extension, file_format,
         create_image_file
 ):
     filename = f"test.{extension}"
-    create_image_file(filename, format, 100, 100)
+    create_image_file(filename, file_format, 100, 100)
     with open(filename, "rb") as file_binary:
         file = File(file_binary, name=filename)
         try:

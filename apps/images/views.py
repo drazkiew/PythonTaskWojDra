@@ -75,7 +75,7 @@ class ImagesView(APIView):
             - If both variables are included, the image will be scaled match that size.
             - If one of them is excluded or equal to 0, the image will be scaled
             to match the provided size, while keeping original aspect ratio.
-            - If neither are provided or both are equal to 0, the image's size will be left intact.
+            - If both are not provided or are equal to 0, the image's size will be left intact.
         - **image** - (*required*) Image's file. If a file with exactly the same name exists already
         on the server, a suffix will be added to differentiate them.
         """

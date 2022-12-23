@@ -2,7 +2,7 @@
 This project is a Django app build according to the specifications described in [this page](https://gitlab.futuremind.dev/fm-public/python-task).
 
 ## Summary
-This app is a DJango app with an REST API, which allows for:
+This app is a Django app with an REST API, which allows for:
 
 - Uploading, storing and retrieving image files in commonly used image formats.
 - Changing the size of an uploaded image
@@ -55,7 +55,7 @@ DEBUG=True
 ### Setting up PostgreSQL connection
 The app expects a connection with a PostgreSQL database to work properly.
 To set it up, a [connection service file](https://www.postgresql.org/docs/current/libpq-pgservice.html) must be created/modified (for example, you can create a `.pg_service.conf` file in your home directory).
-Add the following declaration inside of it:
+Add the following declaration inside it:
 ```
 [task_service]
 host=HOST
