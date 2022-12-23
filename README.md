@@ -4,8 +4,9 @@ This project is a Django app build according to the specifications described in 
 ## Summary
 This app is a Django app with an REST API, which allows for:
 
-- Uploading, storing and retrieving image files in commonly used image formats.
-- Changing the size of an uploaded image
+- Uploading, changing size and setting a title of an image file in commonly used image formats.
+- Retrieving stored image objects, which contain their title, size, as well as URI to download the associated image file.
+- Searching for image objects by their titles.
 
 App's API is documented via Swagger, which is exposed at the default page (URI "/") of the app, once it has been launched.
 
