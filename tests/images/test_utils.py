@@ -17,6 +17,8 @@ from apps.images.utils import get_error_response, prepare_image, ImagePreparatio
 )
 def test_get_error_response(error, status):
     response = get_error_response(error, status)
+
+    # Check if created response matches its expected properties
     assert response.status_code == status
     assert response.data == {"error": error}
 
@@ -54,6 +56,7 @@ def test_prepare_image(
 
     result_image = PillowImage.open(result_file)
 
+    # Check if the resulting image matches provided parameters
     assert result_file
     assert result_image
     assert result_image.width == resize_width
@@ -80,6 +83,7 @@ def test_prepare_image_no_resize(
             file, 0, 0
         )
 
+        # Check if file is the same
         assert result_file
         assert file
         assert file == result_file
@@ -100,6 +104,8 @@ def test_prepare_image_not_supported_format(
 ):
     filename = f"test.{extension}"
     create_image_file(filename, file_format, 100, 100)
+
+    # Check if exception is thrown
     with open(filename, "rb") as file_binary:
         file = File(file_binary, name=filename)
         try:

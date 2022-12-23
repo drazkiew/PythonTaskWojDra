@@ -95,6 +95,12 @@ class ImagesView(APIView):
 
     @classmethod
     def create_image_query(cls, args: QueryDict) -> Q:
+        """
+        Class method for creating a filtering query for this View's GET method.
+
+        :param args: Query arguments received by the GET method
+        :return: Django query filter
+        """
         query = Q()
         if "title" in args:
             query &= Q(title__icontains=args["title"])

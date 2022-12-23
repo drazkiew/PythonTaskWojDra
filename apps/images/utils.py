@@ -18,6 +18,13 @@ image_types = {
 
 
 def get_error_response(error: Any, status: int) -> Response:
+    """
+    Function for creating a predictable error response.
+
+    :param error: A JSON-able object, which will be returned within the response
+    :param status: HTTP error code
+    :return: Error Response
+    """
     return Response({"error": error}, status=status)
 
 
@@ -26,6 +33,17 @@ class ImagePreparationError(Exception):
 
 
 def prepare_image(image_file: File, width: int, height: int) -> (File, int, int):
+    """
+    Function for scaling an image, given as a File, to fit provided size.
+    If either width or height are 0, image will be scaled to one of
+    the sizes (non-zero one), while keeping its aspect ratio.
+    If both are 0, image will not be scaled.
+
+    :param image_file: A file containing an image
+    :param width: Intended resulting width of the image
+    :param height: Intended resulting height of the image
+    :return: Tuple of resulting image file, and its final width and height
+    """
     img = Image.open(image_file)
     if width or height:
         if not width:

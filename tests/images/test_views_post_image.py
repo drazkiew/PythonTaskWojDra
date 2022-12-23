@@ -24,14 +24,14 @@ def test_images_view_post(
 ):
     filename = f"{file}.{extension}"
 
-    image_size = create_image_file(filename, file_format, width, height)
+    create_image_file(filename, file_format, width, height)
     response = post_image(api_client, title, filename, width, height)
 
     # open uploaded file
     created = Image.objects.get(id=response.data.get("id"))
     saved_image = PillowImage.open(created.image.path) if created else None
 
-    # Check general response data
+    # Check if the response is correct
     assert response.status_code == 201
     assert response.data.get("id")
     assert response.data.get("title") == title
@@ -44,7 +44,6 @@ def test_images_view_post(
     assert saved_image.width == width
     assert saved_image.height == height
     assert saved_image.format == file_format
-    assert saved_image.size == image_size
 
 
 @pytest.mark.django_db
@@ -82,7 +81,7 @@ def test_images_view_post_resize(
         resize_width = width
         resize_height = height
 
-    # Check general response data
+    # Check is the size provided by the response is correct
     assert response.status_code == 201
     assert response.data.get("width") == resize_width
     assert response.data.get("height") == resize_height
@@ -109,7 +108,7 @@ def test_images_view_post_no_title(
     create_image_file(filename, "PNG", 100, 100)
     response = post_image(api_client, None, filename, 100, 100)
 
-    # Check general response data
+    # Check if the title is the same as file name (without extension)
     assert response.status_code == 201
     assert response.data.get("title") == file
 
@@ -159,7 +158,7 @@ def test_images_view_post_negative_numbers(
     create_image_file("test.png", "PNG", abs(width), abs(height))
     response = post_image(api_client, "test", "test.png", width, height)
 
-    # Check general response data
+    # Check if error occurred
     assert response.status_code == 400
     assert response.data == expected_error
 
@@ -178,7 +177,7 @@ def test_images_view_post_unsupported_format(
     create_image_file(f"test.{extension}", file_format, 100, 100)
     response = post_image(api_client, "test", f"test.{extension}", 100, 100)
 
-    # Check general response data
+    # Check if error occurred
     assert response.status_code == 400
     assert response.data == {'error': f'File format "{extension}" is not supported'}
 
@@ -198,4 +197,5 @@ def test_images_view_create_image_query(
     args = QueryDict(arguments)
     query = ImagesView.create_image_query(args)
 
+    # Check if query is the same as expected
     assert query == expected

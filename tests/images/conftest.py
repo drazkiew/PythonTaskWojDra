@@ -6,6 +6,7 @@ import pytest
 from PIL import Image as PillowImage
 from django.core.files import File
 from django.urls import reverse
+from rest_framework.response import Response
 
 from apps.images.models import Image
 
@@ -35,7 +36,7 @@ test_simple_images = [
 
 @pytest.fixture()
 def create_images():
-    def inner_create_images(image_templates: List[dict]):
+    def inner_create_images(image_templates: List[dict]) -> List[Image]:
         image_list = []
         for template in image_templates:
             img = PillowImage.new(
@@ -72,13 +73,12 @@ def remove_images_afterwards():
 
 @pytest.fixture()
 def create_image_file():
-    def inner_create_images(filename: str, file_format: str, width: int, height: int):
+    def inner_create_images(filename: str, file_format: str, width: int, height: int) -> None:
         img = PillowImage.new(
             'RGB', (width, height),
             color='red'
         )
         img.save(filename, format=file_format)
-        return img.size
 
     yield inner_create_images
 
@@ -90,7 +90,7 @@ def post_image():
     def inner_post_image(
             api_client: APIClient, title: str,
             filename: str, width: int, height: int
-    ):
+    ) -> Response:
         url = reverse('images_view')
 
         with open(filename, "rb") as test_file:

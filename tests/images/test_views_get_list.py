@@ -9,6 +9,8 @@ from .conftest import test_simple_images
 def test_images_view_get_empty(api_client):
     url = reverse('images_view')
     response = api_client.get(url)
+
+    # Check if empty
     assert response.status_code == 200
     assert len(response.data) == 0
 
@@ -24,7 +26,7 @@ def test_images_view_get_list(count, api_client, create_images):
 
     response = api_client.get(url)
 
-    # Check general response data
+    # Check if the item count is correct
     assert response.status_code == 200
     assert len(response.data) == count
     # Check if individual results from the list match the templates
@@ -55,6 +57,6 @@ def test_images_view_get_list_title_search(
 
     response = api_client.get(url)
 
-    # Check general response data and if the search gave us expected amount of items
+    # Check if the search gave us expected amount of items
     assert response.status_code == 200
     assert len(response.data) == expected_count
