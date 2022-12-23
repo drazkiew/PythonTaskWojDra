@@ -17,3 +17,4 @@ setuptools==60.2.0
 sqlparse==0.4.3
 tomli==2.0.1
 wheel==0.37.1
+drf-yasg==1.21.4

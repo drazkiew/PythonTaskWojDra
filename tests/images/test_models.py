@@ -47,6 +47,38 @@ def test_image_create(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    'file, extension, format', [
+        ("example", "png", "PNG"),
+        ("another", "gif", "GIF"),
+    ]
+)
+def test_image_create_same_filename(
+        file, extension, format,
+        create_image_file, remove_images_afterwards
+):
+    filename = f"{file}.{extension}"
+    create_image_file(filename, format, 100, 100)
+    with open(filename, "rb") as test_file:
+        first_created = Image.create(
+            "test1", 100, 100, File(test_file)
+        )
+        second_created = Image.create(
+            "test2", 100, 100, File(test_file)
+        )
+        third_created = Image.create(
+            "test3", 100, 100, File(test_file)
+        )
+    os.remove(filename)
+
+    assert first_created
+    assert second_created
+    assert not first_created.image.name == second_created.image.name
+    assert not first_created.image.name == third_created.image.name
+    assert not second_created.image.name == third_created.image.name
+
+
+@pytest.mark.django_db
 def test_image_url(create_images):
     images = create_images(test_simple_images)
 
