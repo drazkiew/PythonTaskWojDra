@@ -2,7 +2,7 @@
 This project is a Django app build according to the specifications described in [this page](https://gitlab.futuremind.dev/fm-public/python-task).
 
 ## Summary
-This app is a Django app with an REST API, which allows for:
+This project containst code for a Django app with an REST API, which allows for:
 
 - Uploading, changing size and setting a title of an image file in commonly used image formats.
 - Retrieving stored image objects, which contain their title, size, as well as URI to download the associated image file.
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 Inside project's root folder exists a file `.env_example`. Create a copy of it called `.env` and fill out its fields:
 
 - **SECRET_KEY** - A secret key of your Django app. There are many ways of creating one, but here's an example how to generate one 
-while in your active virtual environment:
+while in an active virtual environment:
   ```bash
   python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
   ```
@@ -55,7 +55,7 @@ DEBUG=True
 
 ### Setting up PostgreSQL connection
 The app expects a connection with a PostgreSQL database to work properly.
-To set it up, a [connection service file](https://www.postgresql.org/docs/current/libpq-pgservice.html) must be created/modified (for example, you can create a `.pg_service.conf` file in your home directory).
+To set it up, a [connection service file](https://www.postgresql.org/docs/current/libpq-pgservice.html) must be created/modified (for examplen in Linux systems, you can create a `.pg_service.conf` file in your home directory).
 Add the following declaration inside it:
 ```
 [task_service]
@@ -89,19 +89,19 @@ localhost:5433:pythontaskdb:admin:averysecurepassword1
 ```
 
 ### Migrate the database
-Once the connection has been established, you can create all the required database structures by using Django's manage tool:
+Once the connection has been established, you can create all the required database structures using Django's manage tool:
 ```bash
 python manage.py migrate
 ```
 
 ### Launch Django app
-Once all the above steps have been completed, the app can be launched using the following command:
+Once all the above steps have been completed, the app can be launched:
 ```bash
 python manage.py runserver
 ```
 
 ## Testing
-This app has tests written using PyTest. They are all located inside the `tests` folder.
+This project has tests written using PyTest. They are all located inside the `tests` folder. Tests will use a temporarily created SQLite database to test app's functionality.
 
 To launch this app's tests, use the following command in project's root directory, inside its virtual environment:
 ```bash
